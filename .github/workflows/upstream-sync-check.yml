@@ -1,0 +1,56 @@
+name: upstream-sync-check
+
+on:
+  schedule:
+    - cron: "0 14 1 * *" # 09:00 America/Chicago on the 1st (approx; no DST)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch MaxEllis and list missing commits
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git remote add upstream https://github.com/MaxEllis/orcaslicer-mcp.git || true
+          git fetch --tags upstream
+          echo "=== HEAD..upstream/main ==="
+          LOG=$(git log --oneline HEAD..upstream/main || true)
+          if [ -z "$LOG" ]; then
+            echo "IN SYNC"
+            echo "status=sync" >> "$GITHUB_ENV"
+          else
+            echo "$LOG"
+            echo "status=behind" >> "$GITHUB_ENV"
+            echo "$LOG" > /tmp/behind.txt
+          fi
+          echo "=== latest upstream tag ==="
+          git describe --tags --abbrev=0 upstream/main || true
+      - name: Open or skip issue
+        if: env.status == 'behind'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --title "Upstream orcaslicer-mcp has new commits" \
+            --body "Monthly check found commits on MaxEllis/orcaslicer-mcp not in this fork.
+
+\`\`\`
+$(cat /tmp/behind.txt)
+\`\`\`
+
+Merge locally:
+\`\`\`bash
+cd ~/orcaslicer-mcp
+git fetch upstream
+git merge upstream/main
+git push origin main
+\`\`\`
+"
