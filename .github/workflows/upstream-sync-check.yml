@@ -1,6 +1,8 @@
 name: upstream-sync-check
 
 on:
+  push:
+    branches: [main]
   schedule:
     - cron: "0 14 1 * *" # 09:00 America/Chicago on the 1st (approx; no DST)
   workflow_dispatch:
@@ -18,7 +20,7 @@ jobs:
           fetch-depth: 0
       - name: Fetch MaxEllis and list missing commits
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ github.token}}
         run: |
           git remote add upstream https://github.com/MaxEllis/orcaslicer-mcp.git || true
           git fetch --tags upstream
@@ -36,8 +38,6 @@ jobs:
           git describe --tags --abbrev=0 upstream/main || true
       - name: Open or skip issue
         if: env.status == 'behind'
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           gh issue create --title "Upstream orcaslicer-mcp has new commits" \
             --body "Monthly check found commits on MaxEllis/orcaslicer-mcp not in this fork.
