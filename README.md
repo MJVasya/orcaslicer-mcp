@@ -8,7 +8,7 @@
 
 Let Claude work alongside you in a real, running OrcaSlicer. It loads models, arranges the plate, tunes settings, slices, and reads the result back as numbers you can question: which feature ate the print time, what a setting actually does, whether a profile breaks your printer's physics. Every change lands in the GUI while you watch, so the slicer stays yours and you get better at it as you go.
 
-This package is an [MCP](https://machine-context-protocol.io) server: it bundles no model and talks to nothing but OrcaSlicer, at an address you configure, localhost by default. The model comes from your MCP client. If that client uses a hosted one, your conversation goes there as any chat does; your models, profiles, and gcode stay on the machine running the slicer. Point the client at a local model and nothing leaves at all.
+This package is an [MCP](https://modelcontextprotocol.io) server: it bundles no model and talks to nothing but OrcaSlicer, at an address you configure, localhost by default. The model comes from your MCP client. If that client uses a hosted one, your conversation goes there as any chat does; your models, profiles, and gcode stay on the machine running the slicer. Point the client at a local model and nothing leaves at all.
 
 ## What it can do
 
@@ -161,7 +161,7 @@ uv run pytest   # unit tests against a mock API, plus a guarded live smoke test
 
 The live smoke test skips itself unless `ORCA_API_URL` and `ORCA_API_TOKEN` point at a running OrcaSlicer MCP build.
 
-Protocol notes, design specs, and verification results live in [`docs/`](docs/).
+Protocol notes, design specs, and verification results live in `docs/`.
 
 ## Privacy policy
 
