@@ -38,6 +38,8 @@ jobs:
           git describe --tags --abbrev=0 upstream/main || true
       - name: Open or skip issue
         if: env.status == 'behind'
+        env:
+          GH_TOKEN: ${{ github.token}}
         run: |
           gh issue create --title "Upstream orcaslicer-mcp has new commits" \
             --body "Monthly check found commits on MaxEllis/orcaslicer-mcp not in this fork.
