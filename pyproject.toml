@@ -1,12 +1,12 @@
 [project]
 name = "orcaslicer-mcp"
-version = "0.1.12"
+version = "0.1.13"
 description = "Work a running OrcaSlicer from Claude or any MCP client: load models, tune settings, slice, and understand the result through per-feature breakdowns, setting explanations, and physics checks"
 readme = "README.md"
 license = { text = "AGPL-3.0-only" }
 authors = [{ name = "Max Ellis" }]
 requires-python = ">=3.11"
-keywords = ["mcp", "orcaslicer", "3d-printing", "slicer", "claude", "model-context-protocol"]
+keywords = ["mcp", "orcaslicer", "3d-printing", "slicer", "claude", "machine-context-protocol"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "License :: OSI Approved :: GNU Affero General Public License v3",
